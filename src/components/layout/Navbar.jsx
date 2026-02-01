@@ -27,7 +27,7 @@ const Navbar = () => {
     ];
 
   return (
-    <nav className="w-full h-20 bg-[#1D283A] text-white flex items-center justify-between px-6 md:px-10 shadow-md">
+    <nav className="w-full h-18 bg-[#1D283A] text-white flex items-center justify-between px-6 md:px-10 shadow-md">
 
       <div className="flex items-center gap-2 text-xl font-bold">
         <HiTrendingUp className="text-blue-500 text-3xl" />
