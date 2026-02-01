@@ -22,7 +22,7 @@ const SummaryCard = () => {
       {data.map((item, index) => (
         <div
           key={index}
-          className="rounded-xl bg-[#1D283A] p-6 flex flex-col gap-1 border borde"
+          className="rounded-xl bg-[#1D283A] p-6 flex flex-col gap-1 border"
         >
           <span className="text-sm text-slate-400">
             {item.summary}
