@@ -1,4 +1,9 @@
+import { useNavigate } from "react-router-dom";
+
 const LoginForm = () => {
+
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col gap-4">
 
@@ -20,7 +25,7 @@ const LoginForm = () => {
         />
       </div>
 
-      <button className="mt-2 h-11 rounded-lg bg-blue-600 hover:bg-blue-700 transition font-semibold">
+      <button className="mt-2 h-11 rounded-lg bg-blue-600 hover:bg-blue-700 transition font-semibold" onClick={()=>navigate('/dashboard')}>
         Sign In
       </button>
 
