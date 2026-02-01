@@ -1,12 +1,10 @@
 import React from 'react'
-import Navbar from './components/layout/Navbar'
-import Dashboard from './pages/Dashboard'
+import AppRoutes from "./routes/AppRoutes";
 
 const App = () => {
   return (
-    <div>
-      <Navbar />
-      <Dashboard />
+    <div className="bg-[#020617] min-h-screen text-white">
+      <AppRoutes />
     </div>
   )
 }
