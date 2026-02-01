@@ -5,8 +5,11 @@ import { BsGraphUp, BsWallet } from "react-icons/bs";
 import { AiOutlineHistory } from "react-icons/ai";
 import { FiLogIn } from "react-icons/fi";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+
+  const navigate = useNavigate();
 
   const navItems = [
     {
@@ -51,7 +54,7 @@ const Navbar = () => {
               to={item.path}
               className={({ isActive }) =>
                 `flex items-center gap-2 px-4 py-2 rounded-lg
-                transition-all duration-300
+                transition-all duration-400
                 ${
                   isActive
                     ? "bg-blue-600 text-white"
@@ -76,7 +79,7 @@ const Navbar = () => {
           <span className="font-semibold text-sm">$95,432.50</span>
         </div>
 
-        <button className="p-2 rounded-lg  hover:bg-blue-500 cursor-pointer transition-all duration-400">
+        <button className="p-2 rounded-lg  hover:bg-blue-500 cursor-pointer transition-all duration-400" onClick={()=> navigate("/")}>
           <FiLogIn className="text-xl" />
         </button>
       </div>
