@@ -35,7 +35,7 @@ const Navbar = () => {
   return (
     <nav className="w-full h-18 bg-[#1D283A] text-white flex items-center justify-between px-6 md:px-10 shadow-md">
 
-      <div className="flex items-center gap-2 text-xl font-bold">
+      <div className="flex items-center gap-2 text-xl font-bold cursor-pointer">
         <HiTrendingUp className="text-blue-500 text-3xl" />
         <span>StockSim</span>
       </div>
@@ -71,7 +71,7 @@ const Navbar = () => {
 
       <div className="flex items-center gap-4">
 
-        <div className="hidden sm:flex items-center gap-2 bg-[#223049] px-4 py-2 rounded-lg">
+        <div className="hidden sm:flex items-center gap-2 bg-[#223049] px-4 py-2 rounded-lg cursor-pointer">
           <BsWallet className="text-slate-300" />
           <span className="font-semibold text-sm">$95,432.50</span>
         </div>
