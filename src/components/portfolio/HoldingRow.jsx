@@ -15,9 +15,8 @@ const HoldingRow = ({
     ((currentPrice - avgPrice) / avgPrice) * 100;
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 rounded-xl border border-slate-600 hover:bg-[#24324a] transition-all">
+    <div className="flex items-center justify-between px-4 py-3 rounded-xl border border-slate-600 hover:bg-[#24324a] transition-all duration-400 cursor-pointer">
 
-      {/* Left */}
       <div className="flex flex-col">
         <span className="font-semibold">
           {symbol}
@@ -32,7 +31,6 @@ const HoldingRow = ({
         </span>
       </div>
 
-      {/* Right */}
       <div className="flex flex-col text-right gap-1">
 
         <span className="font-semibold text-slate-300">
