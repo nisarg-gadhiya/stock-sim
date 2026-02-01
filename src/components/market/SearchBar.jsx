@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { CiSearch } from "react-icons/ci";
 
-const SearchBar = () => {
+const SearchBar = ({value,onChange}) => {
   return (
     <div>
       <div className="relative w-full my-6">
@@ -10,6 +10,7 @@ const SearchBar = () => {
           className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg"
         />
         <input
+          onChange={(e) => onChange(e.target.value)}
           type="text"
           placeholder="Search stocks by symbol or company name..."
           className="
