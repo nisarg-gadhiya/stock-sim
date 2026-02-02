@@ -1,6 +1,8 @@
 import React from "react";
 import { HiTrendingUp } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
+import FeaturesSection from "../components/landing/FeaturesSection"
+import CTASection from "../components/landing/CTASection";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ const Landing = () => {
         from-[#020617]
         via-[#020617]
         to-[#020617]
+        py-10
       "
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.15),transparent_60%)]" />
@@ -82,6 +85,8 @@ const Landing = () => {
 
         </div>
       </div>
+      <FeaturesSection />
+      <CTASection />
     </div>
   );
 };
