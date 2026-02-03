@@ -8,8 +8,11 @@ import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { HiMenu } from "react-icons/hi";
+import { usePortfolio } from "../../context/PortfolioContext";
 
 const Navbar = () => {
+
+  const { cashBalance } = usePortfolio();
 
   const navigate = useNavigate();
 
@@ -100,7 +103,7 @@ const Navbar = () => {
 
         <div className="hidden sm:flex items-center gap-2 bg-[#223049] px-4 py-2 rounded-lg cursor-pointer">
           <BsWallet className="text-slate-300" />
-          <span className="font-semibold text-sm">$95,432.50</span>
+          <span className="font-semibold text-sm">${cashBalance.toFixed(2)}</span>
         </div>
 
         <button className="p-2 rounded-lg  hover:bg-blue-500 cursor-pointer transition-all duration-400" onClick={()=> navigate("/")}>

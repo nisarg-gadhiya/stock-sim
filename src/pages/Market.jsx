@@ -1,12 +1,78 @@
 import React, { useState } from "react";
 import { stocks } from "../data/stocks";
-
+import { usePortfolio } from "../context/PortfolioContext";
 import SearchBar from "../components/market/SearchBar";
 import StockList from "../components/market/StockList";
 import TradePanel from "../components/market/TradePanel";
 import StockChart from "../components/market/StockChart";
 
 const Market = () => {
+
+  // const [cashBalance , setcashBalance] = useState(100000);
+  // const [holdings , setHoldings] = useState([]);
+  // const [transactions , setTransactions] = useState([]);
+
+  const {
+    cashBalance,
+    setCashBalance,
+    holdings,
+    setHoldings,
+    setTransactions,
+  } = usePortfolio();
+
+  const handleBuyStock = (stock, quantity) => {
+    // validation
+    if (!stock || quantity <= 0) return;
+
+    const totalCost = stock.price * quantity;
+
+    if (totalCost > cashBalance) {
+      alert("Insufficient balance");
+      return;
+    }
+
+    // deduct cash
+    setCashBalance(prev => prev - totalCost);
+
+    // update holdings  ✅ THIS WAS MISSING
+    setHoldings(prevHoldings => {
+      const existing = prevHoldings.find(
+        h => h.symbol === stock.symbol
+      );
+
+      // if stock already exists
+      if (existing) {
+        return prevHoldings.map(h => {
+          if (h.symbol !== stock.symbol) return h;
+
+          const newQty = h.qty + quantity;
+          const newAvgPrice =
+            (h.avgBuyPrice * h.qty + stock.price * quantity) /
+            newQty;
+
+          return {
+            ...h,
+            qty: newQty,
+            avgBuyPrice: newAvgPrice,
+          };
+        });
+      }
+
+      // first time buy
+      return [
+        ...prevHoldings,
+        {
+          symbol: stock.symbol,
+          company: stock.company,
+          qty: quantity,
+          avgBuyPrice: stock.price,
+        },
+      ];
+    });
+    alert(`Successfully bought ${quantity} shares of ${stock.symbol}`);
+  };
+
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStock, setSelectedStock] = useState(null);
 
@@ -58,7 +124,7 @@ const Market = () => {
 
         {/* RIGHT SIDE */}
         <div className="lg:col-span-1">
-          <TradePanel stock={selectedStock} />
+          <TradePanel stock={selectedStock}  onBuy={handleBuyStock}/>
         </div>
 
       </div>

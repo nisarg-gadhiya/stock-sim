@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const TradePanel = ({ stock }) => {
+const TradePanel = ({ stock , onBuy }) => {
   const [quantity, setQuantity] = useState(1);
 
   // reset quantity when stock changes
@@ -66,6 +66,7 @@ const TradePanel = ({ stock }) => {
 
       {/* Action Button */}
       <button
+        onClick={()=> onBuy(stock,quantity)}
         className="mt-6 w-full py-3 rounded-xl font-semibold
                    bg-blue-500 hover:bg-blue-600 transition"
       >

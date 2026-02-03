@@ -6,8 +6,8 @@ const TransactionList = () => {
     <div className="flex flex-col gap-5 border rounded-xl p-6 bg-[#1D283A]">
 
       <div className='flex flex-col mb-2'>
-        <span className='text-2xl font-semibold'>Available Stocks</span>
-        <span className='mt-1.5 text-slate-400 text-sm'>Click on a stock to view details and trade</span>
+        <span className='text-2xl font-semibold'>All Transactions</span>
+        <span className='mt-1.5 text-slate-400 text-sm'>Complete history of your trades</span>
       </div>
       
       {transactions.map((tx) => (
