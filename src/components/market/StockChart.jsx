@@ -24,7 +24,7 @@ const StockChart = ({ stock }) => {
   const dayHigh = maxPrice;
 
   return (
-    <div className="bg-[#1D283A] p-6 rounded-xl border border-slate-600">
+    <div className="bg-[#1D283A] p-6 rounded-xl border border-white">
       <h2 className="text-xl font-semibold mb-4">
         {stock.symbol} Price Chart
       </h2>

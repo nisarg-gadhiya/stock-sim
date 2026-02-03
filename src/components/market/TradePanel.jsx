@@ -24,7 +24,7 @@ const TradePanel = ({ stock }) => {
   const totalCost = (stock.price * quantity).toFixed(2);
 
   return (
-    <div className="bg-[#1D283A] p-6 rounded-xl border border-slate-600 h-fit">
+    <div className="bg-[#1D283A] p-6 rounded-xl border border-white h-fit">
       {/* Header */}
       <h2 className="text-xl font-semibold">Trade</h2>
       <p className="text-slate-400 mt-1">Buy {stock.symbol}</p>
