@@ -3,36 +3,30 @@ import React from "react";
 const HoldingRow = ({
   symbol,
   company,
-  shares,
-  avgPrice,
+  qty,
+  avgBuyPrice,
   currentPrice,
 }) => {
-
-  const invested = shares * avgPrice;
-  const currentValue = shares * currentPrice;
+  const invested = qty * avgBuyPrice;
+  const currentValue = qty * currentPrice;
 
   const percentChange =
-    ((currentPrice - avgPrice) / avgPrice) * 100;
+    ((currentPrice - avgBuyPrice) / avgBuyPrice) * 100;
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 rounded-xl border border-slate-600 hover:bg-[#24324a] transition-all duration-400 cursor-pointer">
+    <div className="flex items-center justify-between px-4 py-3 rounded-xl border border-slate-600 hover:bg-[#24324a] transition-all duration-300 cursor-pointer">
 
       <div className="flex flex-col">
-        <span className="font-semibold">
-          {symbol}
-        </span>
+        <span className="font-semibold">{symbol}</span>
 
-        <span className="text-sm text-slate-400">
-          {company}
-        </span>
+        <span className="text-sm text-slate-400">{company}</span>
 
         <span className="text-sm text-slate-400 mt-2">
-          {shares} shares @ ${avgPrice.toFixed(2)}
+          {qty} shares @ ${avgBuyPrice.toFixed(2)}
         </span>
       </div>
 
       <div className="flex flex-col text-right gap-1">
-
         <span className="font-semibold text-slate-300">
           ${currentValue.toFixed(2)}
         </span>

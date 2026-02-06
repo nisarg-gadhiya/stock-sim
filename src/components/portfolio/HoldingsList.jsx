@@ -1,8 +1,10 @@
 import React from "react";
 import HoldingRow from "./HoldingRow";
-import { holdings } from "../../data/holdings";
+import { usePortfolio } from "../../context/PortfolioContext";
 
 const HoldingsList = () => {
+  const { holdings } = usePortfolio();
+
   return (
     <div className="rounded-xl bg-[#1D283A] p-6 border border-white">
 
@@ -13,18 +15,24 @@ const HoldingsList = () => {
         </p>
       </div>
 
-      <div className="flex flex-col gap-3">
-        {holdings.map((stock) => (
-          <HoldingRow
-            key={stock.symbol}
-            symbol={stock.symbol}
-            company={stock.company}
-            shares={stock.shares}
-            avgPrice={stock.avgPrice}
-            currentPrice={stock.currentPrice}
-          />
-        ))}
-      </div>
+      {holdings.length === 0 ? (
+        <p className="text-slate-400 text-sm">
+          No holdings yet. Buy a stock from Market.
+        </p>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {holdings.map((stock) => (
+            <HoldingRow
+              key={stock.symbol}
+              symbol={stock.symbol}
+              company={stock.company}
+              qty={stock.qty}
+              avgBuyPrice={stock.avgBuyPrice}
+              currentPrice={stock.currentPrice ?? stock.avgBuyPrice}
+            />
+          ))}
+        </div>
+      )}
 
     </div>
   );

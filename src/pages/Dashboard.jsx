@@ -6,6 +6,7 @@ import { usePortfolio } from "../context/PortfolioContext";
 
 const Dashboard = () => {
   const { cashBalance, holdings } = usePortfolio();
+  const { transactions } = usePortfolio();
 
   const portfolioValue = holdings.reduce(
     (sum, h) => sum + h.qty * h.avgBuyPrice,
@@ -21,7 +22,7 @@ const Dashboard = () => {
             <p className='text-[16px] text-[#94A3b8] my-2'>Welcome back, <span>demo@example.com</span></p>
         </div>
         <StatsGrid cashBalance={cashBalance} portfolioValue={portfolioValue} totalValue={totalValue}/>
-        <RecentTransactions />
+        <RecentTransactions transactions={transactions.slice(0,3)} />
     </div>
   )
 }

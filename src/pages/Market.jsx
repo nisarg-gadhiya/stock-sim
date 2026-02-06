@@ -31,18 +31,17 @@ const Market = () => {
       return;
     }
 
-    // deduct cash
-    setCashBalance(prev => prev - totalCost);
+    // 1) deduct cash
+    setCashBalance((prev) => prev - totalCost);
 
-    // update holdings  ✅ THIS WAS MISSING
-    setHoldings(prevHoldings => {
+    // 2) update holdings
+    setHoldings((prevHoldings) => {
       const existing = prevHoldings.find(
-        h => h.symbol === stock.symbol
+        (h) => h.symbol === stock.symbol
       );
 
-      // if stock already exists
       if (existing) {
-        return prevHoldings.map(h => {
+        return prevHoldings.map((h) => {
           if (h.symbol !== stock.symbol) return h;
 
           const newQty = h.qty + quantity;
@@ -58,7 +57,6 @@ const Market = () => {
         });
       }
 
-      // first time buy
       return [
         ...prevHoldings,
         {
@@ -69,8 +67,26 @@ const Market = () => {
         },
       ];
     });
+
+    // 3) add transaction ✅
+    setTransactions((prev) => [
+      {
+        id: crypto.randomUUID(),
+        type: "BUY",
+        symbol: stock.symbol,
+        company: stock.company,
+        qty: quantity,
+        price: stock.price,
+        total: totalCost,
+        timestamp: Date.now(),
+      },
+      ...prev,
+    ]);
+
+    // success
     alert(`Successfully bought ${quantity} shares of ${stock.symbol}`);
   };
+
 
 
   const [searchTerm, setSearchTerm] = useState("");
