@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import HoldingRow from "./HoldingRow";
 import SellModal from "./SellModal";
 import { usePortfolio } from "../../context/PortfolioContext";
+import { useToast } from "../../context/ToastContext";
 
 const HoldingsList = () => {
   const {
@@ -12,6 +13,7 @@ const HoldingsList = () => {
   setTransactions,
 } = usePortfolio();
 
+  const { showToast } = useToast();
   const [isSellOpen, setIsSellOpen] = useState(false);
   const [selectedHolding, setSelectedHolding] = useState(null);
 
@@ -29,7 +31,7 @@ const HoldingsList = () => {
   if (!holding || qty <= 0) return;
 
   if (qty > holding.qty) {
-    alert("You cannot sell more than you own!");
+    showToast("You cannot sell more than you own!", "error");
     return;
   }
 
@@ -68,7 +70,7 @@ const HoldingsList = () => {
     ...prev,
   ]);
 
-  alert(`Successfully sold ${qty} shares of ${holding.symbol}`);
+  showToast(`Sold ${qty} shares of ${holding.symbol}`, "success");
 };
 
 

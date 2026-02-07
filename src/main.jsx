@@ -5,13 +5,16 @@ import App from "./App";
 import "./index.css";
 
 import { PortfolioProvider } from "./context/PortfolioContext";
+import { ToastProvider } from "./context/ToastContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <PortfolioProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </PortfolioProvider>
+    <ToastProvider>
+      <PortfolioProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </PortfolioProvider>
+    </ToastProvider>
   </React.StrictMode>
 );

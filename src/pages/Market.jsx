@@ -5,8 +5,11 @@ import SearchBar from "../components/market/SearchBar";
 import StockList from "../components/market/StockList";
 import TradePanel from "../components/market/TradePanel";
 import StockChart from "../components/market/StockChart";
+import { useToast } from "../context/ToastContext";
 
 const Market = () => {
+
+  const { showToast } = useToast();
 
   // const [cashBalance , setcashBalance] = useState(100000);
   // const [holdings , setHoldings] = useState([]);
@@ -27,7 +30,7 @@ const Market = () => {
     const totalCost = stock.price * quantity;
 
     if (totalCost > cashBalance) {
-      alert("Insufficient balance");
+      showToast("Insufficient balance", "error");
       return;
     }
 
@@ -83,9 +86,8 @@ const Market = () => {
       ...prev,
     ]);
 
-    // success
-    alert(`Successfully bought ${quantity} shares of ${stock.symbol}`);
-  };
+    showToast(`Successfully bought ${quantity} shares of ${stock.symbol}`, "success");
+ };
 
 
 
