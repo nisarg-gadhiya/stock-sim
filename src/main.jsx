@@ -8,10 +8,10 @@ import { PortfolioProvider } from "./context/PortfolioContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <PortfolioProvider>
+    <PortfolioProvider>
+      <BrowserRouter>
         <App />
-      </PortfolioProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </PortfolioProvider>
   </React.StrictMode>
 );
