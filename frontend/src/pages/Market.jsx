@@ -23,71 +23,81 @@ const Market = () => {
     setTransactions,
   } = usePortfolio();
 
-  const handleBuyStock = (stock, quantity) => {
-    // validation
-    if (!stock || quantity <= 0) return;
+  const handleBuyStock = async (stock, quantity) => {
+  // validation
+  if (!stock || quantity <= 0) return;
 
-    const totalCost = stock.price * quantity;
+  if (isProcessingBuy) return; // prevent double click
 
-    if (totalCost > cashBalance) {
-      showToast("Insufficient balance", "error");
-      return;
+  const totalCost = stock.price * quantity;
+
+  if (totalCost > cashBalance) {
+    showToast("Insufficient balance", "error");
+    return;
+  }
+
+  setIsProcessingBuy(true);
+
+  // ⏳ processing delay of 1 second
+  await delay(1000);
+
+  // 1) deduct cash
+  setCashBalance((prev) => prev - totalCost);
+
+  // 2) update holdings
+  setHoldings((prevHoldings) => {
+    const existing = prevHoldings.find((h) => h.symbol === stock.symbol);
+
+    if (existing) {
+      return prevHoldings.map((h) => {
+        if (h.symbol !== stock.symbol) return h;
+
+        const newQty = h.qty + quantity;
+        const newAvgPrice =
+          (h.avgBuyPrice * h.qty + stock.price * quantity) / newQty;
+
+        return {
+          ...h,
+          qty: newQty,
+          avgBuyPrice: newAvgPrice,
+        };
+      });
     }
 
-    // 1) deduct cash
-    setCashBalance((prev) => prev - totalCost);
-
-    // 2) update holdings
-    setHoldings((prevHoldings) => {
-      const existing = prevHoldings.find(
-        (h) => h.symbol === stock.symbol
-      );
-
-      if (existing) {
-        return prevHoldings.map((h) => {
-          if (h.symbol !== stock.symbol) return h;
-
-          const newQty = h.qty + quantity;
-          const newAvgPrice =
-            (h.avgBuyPrice * h.qty + stock.price * quantity) /
-            newQty;
-
-          return {
-            ...h,
-            qty: newQty,
-            avgBuyPrice: newAvgPrice,
-          };
-        });
-      }
-
-      return [
-        ...prevHoldings,
-        {
-          symbol: stock.symbol,
-          company: stock.company,
-          qty: quantity,
-          avgBuyPrice: stock.price,
-        },
-      ];
-    });
-
-    // 3) add transaction ✅
-    setTransactions((prev) => [
+    return [
+      ...prevHoldings,
       {
-        id: crypto.randomUUID(),
-        type: "BUY",
         symbol: stock.symbol,
         company: stock.company,
         qty: quantity,
-        price: stock.price,
-        total: totalCost,
-        timestamp: Date.now(),
+        avgBuyPrice: stock.price,
       },
-      ...prev,
-    ]);
+    ];
+  });
 
-    showToast(`Successfully bought ${quantity} shares of ${stock.symbol}`, "success");
- };
+  // 3) add transaction
+  setTransactions((prev) => [
+    {
+      id: crypto.randomUUID(),
+      type: "BUY",
+      symbol: stock.symbol,
+      company: stock.company,
+      qty: quantity,
+      price: stock.price,
+      total: totalCost,
+      timestamp: Date.now(),
+    },
+    ...prev,
+  ]);
+
+  showToast(
+    `Successfully bought ${quantity} shares of ${stock.symbol}`,
+    "success"
+  );
+
+  setIsProcessingBuy(false);
+};
+
 
 
 
@@ -112,6 +122,10 @@ const Market = () => {
     return stock;
   });
 };
+  const [isProcessingBuy, setIsProcessingBuy] = useState(false);
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 
 
   return (
@@ -142,7 +156,7 @@ const Market = () => {
 
         {/* RIGHT SIDE */}
         <div className="lg:col-span-1">
-          <TradePanel stock={selectedStock}  onBuy={handleBuyStock}/>
+          <TradePanel stock={selectedStock}  onBuy={handleBuyStock} isProcessingBuy={isProcessingBuy}/>
         </div>
 
       </div>
