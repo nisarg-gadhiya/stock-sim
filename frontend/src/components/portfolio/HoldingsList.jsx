@@ -16,6 +16,9 @@ const HoldingsList = () => {
   const { showToast } = useToast();
   const [isSellOpen, setIsSellOpen] = useState(false);
   const [selectedHolding, setSelectedHolding] = useState(null);
+  const [isProcessingSell, setIsProcessingSell] = useState(false);
+
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const openSellModal = (holding) => {
     setSelectedHolding(holding);
@@ -27,13 +30,20 @@ const HoldingsList = () => {
     setSelectedHolding(null);
   };
 
-  const handleConfirmSell = (holding, qty) => {
+  const handleConfirmSell = async (holding, qty) => {
   if (!holding || qty <= 0) return;
+
+  if (isProcessingSell) return;
 
   if (qty > holding.qty) {
     showToast("You cannot sell more than you own!", "error");
     return;
   }
+
+  setIsProcessingSell(true);
+
+  // ⏳ processing delay
+  await delay(1000);
 
   const sellPrice = holding.currentPrice ?? holding.avgBuyPrice;
   const proceeds = sellPrice * qty;
@@ -43,36 +53,40 @@ const HoldingsList = () => {
 
   // 2) update holdings
   setHoldings((prevHoldings) => {
-    return prevHoldings
-      .map((h) => {
-        if (h.symbol !== holding.symbol) return h;
+      return prevHoldings
+        .map((h) => {
+          if (h.symbol !== holding.symbol) return h;
 
-        const remainingQty = h.qty - qty;
+          const remainingQty = h.qty - qty;
 
-        return {
-          ...h,
-          qty: remainingQty,
-        };
-      })
-      .filter((h) => h.qty > 0);
-  });
+          return {
+            ...h,
+            qty: remainingQty,
+          };
+        })
+        .filter((h) => h.qty > 0);
+    });
 
-  // 3) add transaction
-  setTransactions((prev) => [
-    {
-      type: "SELL",
-      symbol: holding.symbol,
-      company: holding.company,
-      shares: qty,
-      price: sellPrice,
-      date: new Date().toLocaleString(),
-    },
-    ...prev,
-  ]);
+    // 3) add transaction
+    setTransactions((prev) => [
+      {
+        id: crypto.randomUUID(),
+        type: "SELL",
+        symbol: holding.symbol,
+        company: holding.company,
+        qty: qty,
+        price: sellPrice,
+        total: proceeds,
+        timestamp: Date.now(),
+      },
+      ...prev,
+    ]);
 
-  showToast(`Sold ${qty} shares of ${holding.symbol}`, "success");
-};
+    showToast(`Sold ${qty} shares of ${holding.symbol}`, "success");
 
+    setIsProcessingSell(false);
+    closeSellModal();
+  };
 
   return (
     <div className="rounded-xl bg-[#1D283A] p-6 border border-white">
@@ -109,6 +123,7 @@ const HoldingsList = () => {
         onClose={closeSellModal}
         holding={selectedHolding}
         onConfirm={handleConfirmSell}
+        isProcessingSell={isProcessingSell}
       />
     </div>
   );

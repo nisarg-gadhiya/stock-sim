@@ -14,7 +14,7 @@ const Market = () => {
   // const [cashBalance , setcashBalance] = useState(100000);
   // const [holdings , setHoldings] = useState([]);
   // const [transactions , setTransactions] = useState([]);
-
+  
   const {
     cashBalance,
     setCashBalance,

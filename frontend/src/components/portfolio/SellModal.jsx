@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const SellModal = ({ isOpen, onClose, holding, onConfirm }) => {
+const SellModal = ({ isOpen, onClose, holding, onConfirm, isProcessingSell }) => {
   const [qty, setQty] = useState(1);
 
   // reset qty when modal opens / holding changes
@@ -15,18 +15,21 @@ const SellModal = ({ isOpen, onClose, holding, onConfirm }) => {
   const proceeds = qty * price;
 
   const handleConfirm = () => {
+    if (isProcessingSell) return;
     if (qty <= 0) return;
     if (qty > maxQty) return;
 
     onConfirm(holding, qty);
-    onClose();
   };
+
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
       {/* Overlay */}
       <div
-        onClick={onClose}
+        onClick={() => {
+          if (!isProcessingSell) onClose();
+        }}
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
       />
 
@@ -80,10 +83,16 @@ const SellModal = ({ isOpen, onClose, holding, onConfirm }) => {
         {/* Confirm Button */}
         <button
           onClick={handleConfirm}
-          className="mt-7 w-full rounded-xl bg-blue-500 py-4 font-semibold text-black hover:bg-blue-600 transition"
+          disabled={isProcessingSell}
+          className={`mt-7 w-full rounded-xl py-4 font-semibold transition ${
+            isProcessingSell
+              ? "bg-blue-300 cursor-not-allowed text-black"
+              : "bg-blue-500 hover:bg-blue-600 text-black"
+          }`}
         >
-          Confirm Sale
+          {isProcessingSell ? "Processing..." : "Confirm Sale"}
         </button>
+
       </div>
     </div>
   );
